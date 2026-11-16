@@ -7,6 +7,7 @@ class Settings(BaseSettings):
     database_url: str = "sqlite:///./blinkcheck.db"
     aws_region: str = "us-east-1"
     s3_bucket: str = ""
+    ses_from_email: str = ""
     cors_origins: str = "http://localhost:5173"
     session_ttl_seconds: int = 180
     otp_secret: str = "change-this-to-a-long-random-secret"

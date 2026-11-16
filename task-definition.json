@@ -1,0 +1,84 @@
+{
+    "executionRoleArn":  "arn:aws:iam::660113312060:role/BlinkCheckExecutionRole",
+    "networkMode":  "awsvpc",
+    "cpu":  "1024",
+    "requiresCompatibilities":  [
+                                    "FARGATE"
+                                ],
+    "containerDefinitions":  [
+                                 {
+                                     "name":  "blinkcheck-api",
+                                     "logConfiguration":  {
+                                                              "logDriver":  "awslogs",
+                                                              "options":  {
+                                                                              "awslogs-region":  "us-east-1",
+                                                                              "awslogs-stream-prefix":  "ecs",
+                                                                              "awslogs-group":  "/ecs/blinkcheck-api"
+                                                                          }
+                                                          },
+                                     "environment":  [
+                                                         {
+                                                             "value":  "false",
+                                                             "name":  "MOCK_MODE"
+                                                         },
+                                                         {
+                                                             "value":  "us-east-1",
+                                                             "name":  "AWS_REGION"
+                                                         },
+                                                         {
+                                                             "value":  "blinkcheck-enrollment-660113312060",
+                                                             "name":  "S3_BUCKET"
+                                                         },
+                                                         {
+                                                             "value":  "https://d25108u6fzsj8w.cloudfront.net",
+                                                             "name":  "CORS_ORIGINS"
+                                                         },
+                                                         {
+                                                             "value":  "180",
+                                                             "name":  "SESSION_TTL_SECONDS"
+                                                         },
+                                                         {
+                                                             "value":  "60",
+                                                             "name":  "OTP_TTL_SECONDS"
+                                                         },
+                                                         {
+                                                             "value":  "3",
+                                                             "name":  "MAX_SCORED_ATTEMPTS"
+                                                         },
+                                                         {
+                                                             "value":  "900",
+                                                             "name":  "ATTEMPT_WINDOW_SECONDS"
+                                                         },
+                                                         {
+                                                             "value":  "900",
+                                                             "name":  "LOCKOUT_SECONDS"
+                                                         },
+                                                         {
+                                                             "name":  "SES_FROM_EMAIL",
+                                                             "value":  "yogeshkgowda23@gmail.com"
+                                                         }
+                                                     ],
+                                     "essential":  true,
+                                     "secrets":  [
+                                                     {
+                                                         "valueFrom":  "arn:aws:secretsmanager:us-east-1:660113312060:secret:blinkcheck/database-CVu5nt:DATABASE_URL::",
+                                                         "name":  "DATABASE_URL"
+                                                     },
+                                                     {
+                                                         "valueFrom":  "arn:aws:secretsmanager:us-east-1:660113312060:secret:blinkcheck/otp-bzmUlU:OTP_SECRET::",
+                                                         "name":  "OTP_SECRET"
+                                                     }
+                                                 ],
+                                     "image":  "660113312060.dkr.ecr.us-east-1.amazonaws.com/blinkcheck-api:latest",
+                                     "portMappings":  [
+                                                          {
+                                                              "protocol":  "tcp",
+                                                              "containerPort":  8000
+                                                          }
+                                                      ]
+                                 }
+                             ],
+    "family":  "blinkcheck-api-task",
+    "taskRoleArn":  "arn:aws:iam::660113312060:role/BlinkCheckApiTaskRole",
+    "memory":  "2048"
+}

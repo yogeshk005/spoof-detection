@@ -1,5 +1,6 @@
 import uuid
 import boto3
+from functools import lru_cache
 from botocore.exceptions import BotoCoreError, ClientError
 from .config import settings
 
@@ -27,6 +28,10 @@ class AwsBiometrics:
                            ContentType="image/jpeg", ServerSideEncryption="AES256")
         return key
 
+    def get_enrollment_reference(self, s3_key: str) -> bytes:
+        result = self.s3.get_object(Bucket=settings.s3_bucket, Key=s3_key)
+        return result["Body"].read()
+
     def compare_reference_to_enrollment(self, reference_bytes: bytes, s3_key: str) -> float:
         result = self.client.compare_faces(
             SourceImage={"Bytes": reference_bytes},
@@ -35,3 +40,8 @@ class AwsBiometrics:
         )
         matches = result.get("FaceMatches", [])
         return max((float(item["Similarity"]) for item in matches), default=0.0)
+
+
+@lru_cache(maxsize=1)
+def get_aws_biometrics() -> AwsBiometrics:
+    return AwsBiometrics()

@@ -1,0 +1,1 @@
+{"Name":"blinkcheck-frontend-oac","Description":"CloudFront access to private BlinkCheck frontend bucket","SigningProtocol":"sigv4","SigningBehavior":"always","OriginAccessControlOriginType":"s3"}

@@ -1,0 +1,19 @@
+{
+    "Version":  "2012-10-17",
+    "Statement":  [
+                      {
+                          "Action":  "s3:GetObject",
+                          "Condition":  {
+                                            "StringEquals":  {
+                                                                 "AWS:SourceArn":  "arn:aws:cloudfront::660113312060:distribution/E1DCNJ3H5X2S65"
+                                                             }
+                                        },
+                          "Principal":  {
+                                            "Service":  "cloudfront.amazonaws.com"
+                                        },
+                          "Resource":  "arn:aws:s3:::blinkcheck-frontend-660113312060/*",
+                          "Effect":  "Allow",
+                          "Sid":  "AllowCloudFrontRead"
+                      }
+                  ]
+}

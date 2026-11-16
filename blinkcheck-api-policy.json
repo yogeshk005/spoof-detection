@@ -1,0 +1,25 @@
+{
+    "Version":  "2012-10-17",
+    "Statement":  [
+                      {
+                          "Effect":  "Allow",
+                          "Sid":  "RekognitionActions",
+                          "Resource":  "*",
+                          "Action":  [
+                                         "rekognition:CreateFaceLivenessSession",
+                                         "rekognition:GetFaceLivenessSessionResults",
+                                         "rekognition:CompareFaces",
+                                         "rekognition:DetectFaces"
+                                     ]
+                      },
+                      {
+                          "Effect":  "Allow",
+                          "Sid":  "EnrollmentObjects",
+                          "Resource":  "arn:aws:s3:::blinkcheck-enrollment-660113312060/enrollments/*",
+                          "Action":  [
+                                         "s3:PutObject",
+                                         "s3:GetObject"
+                                     ]
+                      }
+                  ]
+}

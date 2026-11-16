@@ -1,0 +1,62 @@
+{
+    "CustomErrorResponses":  {
+                                 "Quantity":  2,
+                                 "Items":  [
+                                               {
+                                                   "ResponsePagePath":  "/index.html",
+                                                   "ErrorCode":  403,
+                                                   "ErrorCachingMinTTL":  0,
+                                                   "ResponseCode":  "200"
+                                               },
+                                               {
+                                                   "ResponsePagePath":  "/index.html",
+                                                   "ErrorCode":  404,
+                                                   "ErrorCachingMinTTL":  0,
+                                                   "ResponseCode":  "200"
+                                               }
+                                           ]
+                             },
+    "CallerReference":  "blinkcheck-20261116143255",
+    "DefaultRootObject":  "index.html",
+    "Origins":  {
+                    "Quantity":  1,
+                    "Items":  [
+                                  {
+                                      "S3OriginConfig":  {
+                                                             "OriginAccessIdentity":  ""
+                                                         },
+                                      "OriginAccessControlId":  "ECOBB87Z2XTPF",
+                                      "Id":  "blinkcheck-s3-origin",
+                                      "DomainName":  "blinkcheck-frontend-660113312060.s3.us-east-1.amazonaws.com"
+                                  }
+                              ]
+                },
+    "DefaultCacheBehavior":  {
+                                 "TargetOriginId":  "blinkcheck-s3-origin",
+                                 "AllowedMethods":  {
+                                                        "Quantity":  2,
+                                                        "Items":  [
+                                                                      "GET",
+                                                                      "HEAD"
+                                                                  ],
+                                                        "CachedMethods":  {
+                                                                              "Quantity":  2,
+                                                                              "Items":  [
+                                                                                            "GET",
+                                                                                            "HEAD"
+                                                                                        ]
+                                                                          }
+                                                    },
+                                 "MinTTL":  0,
+                                 "ViewerProtocolPolicy":  "redirect-to-https",
+                                 "Compress":  true,
+                                 "ForwardedValues":  {
+                                                         "Cookies":  {
+                                                                         "Forward":  "none"
+                                                                     },
+                                                         "QueryString":  false
+                                                     }
+                             },
+    "Enabled":  true,
+    "Comment":  "BlinkCheck frontend"
+}

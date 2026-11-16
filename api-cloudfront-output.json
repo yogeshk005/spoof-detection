@@ -1,0 +1,155 @@
+{
+    "Location": "https://cloudfront.amazonaws.com/2020-05-31/distribution/EPJHAF0EHHL97",
+    "ETag": "E23ZP02F085DFQ",
+    "Distribution": {
+        "Id": "EPJHAF0EHHL97",
+        "ARN": "arn:aws:cloudfront::660113312060:distribution/EPJHAF0EHHL97",
+        "Status": "InProgress",
+        "LastModifiedTime": "2026-11-16T09:14:07.861000+00:00",
+        "InProgressInvalidationBatches": 0,
+        "DomainName": "dx5sz3f82m5os.cloudfront.net",
+        "ActiveTrustedSigners": {
+            "Enabled": false,
+            "Quantity": 0
+        },
+        "ActiveTrustedKeyGroups": {
+            "Enabled": false,
+            "Quantity": 0
+        },
+        "DistributionConfig": {
+            "CallerReference": "blinkcheck-api-20261116144317",
+            "Aliases": {
+                "Quantity": 0
+            },
+            "DefaultRootObject": "",
+            "Origins": {
+                "Quantity": 1,
+                "Items": [
+                    {
+                        "Id": "blinkcheck-alb-origin",
+                        "DomainName": "blinkcheck-alb-335736134.us-east-1.elb.amazonaws.com",
+                        "OriginPath": "",
+                        "CustomHeaders": {
+                            "Quantity": 0
+                        },
+                        "CustomOriginConfig": {
+                            "HTTPPort": 80,
+                            "HTTPSPort": 443,
+                            "OriginProtocolPolicy": "http-only",
+                            "OriginSslProtocols": {
+                                "Quantity": 1,
+                                "Items": [
+                                    "TLSv1.2"
+                                ]
+                            },
+                            "OriginReadTimeout": 30,
+                            "OriginKeepaliveTimeout": 5
+                        },
+                        "ConnectionAttempts": 3,
+                        "ConnectionTimeout": 10,
+                        "OriginShield": {
+                            "Enabled": false
+                        },
+                        "OriginAccessControlId": ""
+                    }
+                ]
+            },
+            "OriginGroups": {
+                "Quantity": 0
+            },
+            "DefaultCacheBehavior": {
+                "TargetOriginId": "blinkcheck-alb-origin",
+                "TrustedSigners": {
+                    "Enabled": false,
+                    "Quantity": 0
+                },
+                "TrustedKeyGroups": {
+                    "Enabled": false,
+                    "Quantity": 0
+                },
+                "ViewerProtocolPolicy": "redirect-to-https",
+                "AllowedMethods": {
+                    "Quantity": 7,
+                    "Items": [
+                        "HEAD",
+                        "DELETE",
+                        "POST",
+                        "GET",
+                        "OPTIONS",
+                        "PUT",
+                        "PATCH"
+                    ],
+                    "CachedMethods": {
+                        "Quantity": 2,
+                        "Items": [
+                            "HEAD",
+                            "GET"
+                        ]
+                    }
+                },
+                "SmoothStreaming": false,
+                "Compress": true,
+                "LambdaFunctionAssociations": {
+                    "Quantity": 0
+                },
+                "FunctionAssociations": {
+                    "Quantity": 0
+                },
+                "FieldLevelEncryptionId": "",
+                "GrpcConfig": {
+                    "Enabled": false
+                },
+                "ForwardedValues": {
+                    "QueryString": true,
+                    "Cookies": {
+                        "Forward": "all"
+                    },
+                    "Headers": {
+                        "Quantity": 1,
+                        "Items": [
+                            "*"
+                        ]
+                    },
+                    "QueryStringCacheKeys": {
+                        "Quantity": 0
+                    }
+                },
+                "MinTTL": 0,
+                "DefaultTTL": 0,
+                "MaxTTL": 0
+            },
+            "CacheBehaviors": {
+                "Quantity": 0
+            },
+            "CustomErrorResponses": {
+                "Quantity": 0
+            },
+            "Comment": "BlinkCheck API HTTPS proxy",
+            "Logging": {
+                "Enabled": false,
+                "IncludeCookies": false,
+                "Bucket": "",
+                "Prefix": ""
+            },
+            "PriceClass": "PriceClass_All",
+            "Enabled": true,
+            "ViewerCertificate": {
+                "CloudFrontDefaultCertificate": true,
+                "SSLSupportMethod": "vip",
+                "MinimumProtocolVersion": "TLSv1",
+                "CertificateSource": "cloudfront"
+            },
+            "Restrictions": {
+                "GeoRestriction": {
+                    "RestrictionType": "none",
+                    "Quantity": 0
+                }
+            },
+            "WebACLId": "",
+            "HttpVersion": "http2",
+            "IsIPV6Enabled": true,
+            "ContinuousDeploymentPolicyId": "",
+            "Staging": false
+        }
+    }
+}

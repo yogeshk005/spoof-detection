@@ -1,0 +1,64 @@
+{
+    "Origins":  {
+                    "Quantity":  1,
+                    "Items":  [
+                                  {
+                                      "CustomOriginConfig":  {
+                                                                 "HTTPSPort":  443,
+                                                                 "OriginSslProtocols":  {
+                                                                                            "Quantity":  1,
+                                                                                            "Items":  [
+                                                                                                          "TLSv1.2"
+                                                                                                      ]
+                                                                                        },
+                                                                 "HTTPPort":  80,
+                                                                 "OriginProtocolPolicy":  "http-only"
+                                                             },
+                                      "Id":  "blinkcheck-alb-origin",
+                                      "DomainName":  "blinkcheck-alb-335736134.us-east-1.elb.amazonaws.com"
+                                  }
+                              ]
+                },
+    "Enabled":  true,
+    "Comment":  "BlinkCheck API HTTPS proxy",
+    "DefaultCacheBehavior":  {
+                                 "ForwardedValues":  {
+                                                         "Cookies":  {
+                                                                         "Forward":  "all"
+                                                                     },
+                                                         "QueryString":  true,
+                                                         "Headers":  {
+                                                                         "Quantity":  1,
+                                                                         "Items":  [
+                                                                                       "*"
+                                                                                   ]
+                                                                     }
+                                                     },
+                                 "MinTTL":  0,
+                                 "MaxTTL":  0,
+                                 "Compress":  true,
+                                 "ViewerProtocolPolicy":  "redirect-to-https",
+                                 "TargetOriginId":  "blinkcheck-alb-origin",
+                                 "AllowedMethods":  {
+                                                        "Quantity":  7,
+                                                        "Items":  [
+                                                                      "GET",
+                                                                      "HEAD",
+                                                                      "OPTIONS",
+                                                                      "PUT",
+                                                                      "POST",
+                                                                      "PATCH",
+                                                                      "DELETE"
+                                                                  ],
+                                                        "CachedMethods":  {
+                                                                              "Quantity":  2,
+                                                                              "Items":  [
+                                                                                            "GET",
+                                                                                            "HEAD"
+                                                                                        ]
+                                                                          }
+                                                    },
+                                 "DefaultTTL":  0
+                             },
+    "CallerReference":  "blinkcheck-api-20261116144317"
+}

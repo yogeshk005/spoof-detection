@@ -1,3 +1,4 @@
+
 # BlinkCheck — AWS deployment guide
 
 This is a practical demo deployment. Validate service availability, quotas, pricing and regional support in your account before creating resources. Choose a region where **Rekognition Face Liveness is enabled**; do not assume `ap-south-1`.
@@ -13,8 +14,10 @@ This is a practical demo deployment. Validate service availability, quotas, pric
 5. Do not enable static website hosting on this bucket.
 
 Set backend environment:
+
 - `AWS_REGION=<supported-region>`
 - `S3_BUCKET=<bucket-name>`
+- `SES_FROM_EMAIL=<verified-sender-address>`
 - `MOCK_MODE=false`
 
 **Verify:** upload a test object through an authorized role and confirm it is private.
@@ -24,6 +27,7 @@ Set backend environment:
 **Goal:** grant only the API and browser the permissions they need.
 
 Create an ECS task role `BlinkCheckApiTaskRole`. Attach a policy scoped to the chosen region and bucket:
+
 - `rekognition:CreateFaceLivenessSession`
 - `rekognition:GetFaceLivenessSessionResults`
 - `rekognition:CompareFaces`
@@ -47,6 +51,7 @@ Create a Cognito Identity Pool for unauthenticated browser liveness streaming on
 5. Store the database username/password in AWS Secrets Manager.
 
 Set:
+
 - `DATABASE_URL=postgresql+psycopg://<user>:<password>@<rds-endpoint>:5432/blinkcheck`
 
 **Verify:** from the API task network, connect with `psql` and run `SELECT 1;`. Do not expose RDS publicly.
@@ -79,6 +84,7 @@ docker push <account-id>.dkr.ecr.<region>.amazonaws.com/blinkcheck-api:latest
    - `AWS_REGION=<supported-region>`
    - `S3_BUCKET=<bucket-name>`
    - `DATABASE_URL` from Secrets Manager
+   - `SES_FROM_EMAIL=<verified-sender-address>`
    - `CORS_ORIGINS=https://<frontend-domain>`
    - `OTP_SECRET` from Secrets Manager (generate a long random value)
    - `SESSION_TTL_SECONDS=180`
@@ -128,6 +134,8 @@ Set `VITE_API_BASE_URL`, `VITE_AWS_REGION`, and `VITE_COGNITO_IDENTITY_POOL_ID` 
 - Keep `OTP_SECRET` and DB credentials in Secrets Manager.
 - Use task IAM roles instead of static AWS credentials.
 - Keep S3 private and encrypted; restrict object access to the API task role.
+- Capture each person's email during enrollment and use Amazon SES for step-up OTP delivery.
+- In the SES sandbox, verify the sender and every recipient address used for testing.
 - Define explicit consent, purpose limitation, retention and deletion procedures.
 - Review India's Digital Personal Data Protection Act and applicable rules with qualified counsel before processing real biometric data.
 - Set a short retention period for audit images; store reason codes and metadata where possible instead of images.
@@ -143,6 +151,7 @@ Set `VITE_API_BASE_URL`, `VITE_AWS_REGION`, and `VITE_COGNITO_IDENTITY_POOL_ID` 
 - Create alarms for API 5xx errors, task restarts, high latency, RDS CPU/storage, and repeated verification denials.
 - Alert on `INJECTION_SUSPECTED`, lockouts and hill-climbing signals.
 - Record per-stage latency: capture complete → decision shown, not the time from opening the camera.
+- Face Liveness capture is interactive; do not promise a total click-to-result time under two seconds. Use the returned `latency_ms` to measure the post-capture decision path.
 - Run at least 100 timed trials and report mean, P95 and P99 latency.
 - Test print, screen replay, video replay and (where safely available) mask attempts. Report measured APCER/BPCER with confidence intervals; do not claim FAR below 0.01% from a small sample.
 
@@ -163,13 +172,14 @@ Set `VITE_API_BASE_URL`, `VITE_AWS_REGION`, and `VITE_COGNITO_IDENTITY_POOL_ID` 
 
 ## Troubleshooting — five likely failures
 
-| Symptom | Likely cause | Fix |
-|---|---|---|
-| Face Liveness session creation fails | Unsupported region, feature not enabled, quota or IAM issue | Check regional availability, account access, quotas and task-role permissions |
-| Liveness detector cannot stream | Cognito identity pool or browser SDK credentials/policy misconfigured | Check region, identity pool ID, guest role and current SDK permission requirements |
-| API returns 403/AccessDenied for image operations | Task role missing scoped S3 or Rekognition permission | Add only the required action and resource to the ECS task role |
-| Frontend reports CORS/network errors | Wrong API URL, ALB health check or CORS origin | Check `VITE_API_BASE_URL`, target health, HTTPS and exact `CORS_ORIGINS` |
-| Database connection fails | Wrong secret/URL, subnet or security group | Check RDS endpoint, credentials, private routing and TCP 5432 ingress from API task SG |
+| Symptom                                           | Likely cause                                                          | Fix                                                                                    |
+| ------------------------------------------------- | --------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| Face Liveness session creation fails              | Unsupported region, feature not enabled, quota or IAM issue           | Check regional availability, account access, quotas and task-role permissions          |
+| Liveness detector cannot stream                   | Cognito identity pool or browser SDK credentials/policy misconfigured | Check region, identity pool ID, guest role and current SDK permission requirements     |
+| API returns 403/AccessDenied for image operations | Task role missing scoped S3 or Rekognition permission                 | Add only the required action and resource to the ECS task role                         |
+| Frontend reports CORS/network errors              | Wrong API URL, ALB health check or CORS origin                        | Check `VITE_API_BASE_URL`, target health, HTTPS and exact `CORS_ORIGINS`           |
+| Database connection fails                         | Wrong secret/URL, subnet or security group                            | Check RDS endpoint, credentials, private routing and TCP 5432 ingress from API task SG |
+| Step-up email is not sent                         | SES sender/recipient is unverified or `SES_FROM_EMAIL` is missing     | Verify identities in SES, set `SES_FROM_EMAIL`, and redeploy the API task           |
 
 ## Cost-awareness
 
