@@ -1,6 +1,6 @@
 # BlinkCheck
 
-Camera-first face liveness and 1:1 identity verification for HID-based physical access control.
+-Developed a camera-based biometric access-control solution during 12 hour HID Hackathon, combining real-time face liveness detection with HID badge-based identity verification.
 
 ## Main user experience
 
